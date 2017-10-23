@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = mongoose.model("users");
 const keys = require("../config/keys");
 const jwt = require("jwt-simple");
+const Reward = mongoose.model("rewards");
 
 const generateToken = user => {
   return jwt.encode({ sub: user.id }, keys.jwtSceretDecoder);
@@ -22,9 +23,11 @@ exports.signUp = (req, res) => {
       return res.send({ error: "This email id is already taken" });
     }
 
-    new User(req.body)
-      .save()
-      .then(user => res.json({ token: generateToken(user) }));
+    new User(req.body).save().then(user => {
+      new Reward({ rewards: 0, _user: user.id })
+        .save()
+        .then(reward => res.json({ token: generateToken(user) }));
+    });
   });
 };
 

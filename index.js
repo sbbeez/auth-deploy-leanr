@@ -15,7 +15,9 @@ mongoose.connect(keys.mongoDbUri);
 app.use(morgan("combined"));
 app.use(bodyParser.json({ type: "*/*" }));
 require("./models/user");
-require("./authRoutes/authRoutes")(app);
+require("./models/reward");
+require("./routes/authRoutes")(app);
+require("./routes/rewardRoutes")(app);
 
 //sever set up
 const PORT = process.env.PORT || 3000;
