@@ -5,8 +5,8 @@ const Reward = require("../controllers/RewardController");
 
 const requireAuth = passport.authenticate("jwt", { session: false });
 
-module.exports = (app) => {
+module.exports = app => {
   app.get("/getRewards", requireAuth, Reward.getRewards);
 
-  app.post("/addRewards",requireAuth, Reward.addRewards);
-}
+  app.post("/addRewards", requireAuth, Reward.addRewards);
+};
