@@ -20,7 +20,7 @@ exports.signUp = (req, res) => {
 
   User.findOne({ email: email }, (err, existingUser) => {
     if (existingUser) {
-      return res.send({ error: "This email id is already taken" });
+      return res.send( "This email id is already taken");
     }
 
     new User(req.body).save().then(user => {
@@ -32,5 +32,19 @@ exports.signUp = (req, res) => {
 };
 
 exports.signin = (req, res, next) => {
-  res.send({ token: generateToken(req.user) });
+  const email = req.body.email;
+  const password = req.body.password;
+  if (!email || !password) {
+    return res
+      .status(422)
+      .send("Please provide both email id and password");
+  }
+
+  User.findOne({ email: email }, (err, existingUser) => {
+    if (existingUser) {
+      return res.send({ token: generateToken(req.user) });
+    }else{
+      return res.send("please enter a valid Email id or password");
+    }
+  })
 };

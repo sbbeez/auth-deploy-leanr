@@ -14,7 +14,7 @@ exports.addRewards = (req, res) => {
     { $inc: { rewards: req.body.rewards } }
   ).then(() => {
     Reward.findOne({ _user: req.user.id }).then(reward => {
-      res.send({ reward });
+      res.send({ reward: reward.rewards });
     });
   });
 };
